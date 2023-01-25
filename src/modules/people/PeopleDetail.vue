@@ -53,6 +53,7 @@ import PeopleButtonFavorites from "@/modules/people/PeopleButtonFavorites.vue";
 import { ref, watch } from "vue";
 import { swapiService } from "@/services/swapi/swapiService";
 import { useRoute } from "vue-router";
+import type { PeopleModel } from "@/services/swapi/type";
 
 const headers: Header[] = [
   { text: "Created", value: "created" },
@@ -74,15 +75,14 @@ const props = defineProps({
   },
 });
 
-// TODO fix type for people
-const people = ref<any>({});
+const people = ref<PeopleModel | {}>({});
 const isLoading = ref(false);
 const error = ref("");
 const getPeopleId = (id: string) => {
   error.value = "";
   try {
     isLoading.value = true;
-    swapiService.getPeopleId(id).then((data) => {
+    swapiService.getPeopleId(id).then((data: PeopleModel) => {
       if (data.name) {
         people.value = data;
       } else {
@@ -108,7 +108,7 @@ const route = useRoute();
 watch(
   () => String(route.params.id),
   (val: string) => {
-    getPeopleId(String(val));
+    getPeopleId(val);
   }
 );
 </script>

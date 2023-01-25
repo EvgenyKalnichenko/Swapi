@@ -1,7 +1,7 @@
 <template>
   <div class="about">
     <h1 class="title-h1">People</h1>
-    <PeopleDetail :id="id" />
+    <PeopleDetail v-if="id" :id="id" />
   </div>
 </template>
 
