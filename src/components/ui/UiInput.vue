@@ -50,6 +50,7 @@ defineProps({
     default: () => "off",
   },
 });
+
 const handlerInput = (e) => {
   emit("update:modelValue", e.target.value);
 };

@@ -9,7 +9,6 @@ export const useFavoritesStore = defineStore("counter", {
     ),
   }),
   actions: {
-    // since we rely on `this`, we cannot use an arrow function
     addFavorites(item: PeopleModel) {
       if (this.favorites.find((el) => el.name === item.name)) return;
       this.favorites.push(item);

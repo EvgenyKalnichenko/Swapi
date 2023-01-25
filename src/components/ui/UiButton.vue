@@ -1,5 +1,8 @@
 <template>
-  <button class="btn" :type="type">
+  <button
+      :type="type"
+      class="btn"
+  >
     <slot />
   </button>
 </template>
@@ -8,11 +11,11 @@
 defineProps({
   modelValue: {
     type: String,
-    default: () => "",
+    default: "",
   },
   type: {
     type: String,
-    default: () => "button",
+    default: "button",
   },
   disabled: {
     type: Boolean,

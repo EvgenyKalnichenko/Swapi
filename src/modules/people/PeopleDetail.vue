@@ -47,7 +47,6 @@
     </template>
   </EasyDataTable>
   <div v-else>{{error}}</div>
-  {{userData}}
 </template>
 
 <script lang="ts" setup>
@@ -101,18 +100,19 @@ const getPeopleId = (id: string) => {
 
 getPeopleId(String(props.id))
 
-const route = useRoute()
-
-watch(
-    () => route.params.id,
-    async (val: string) => {
-      getPeopleId(val)
-    }
-)
 function formatsDate(date: string) {
   const create = new Date(date)
   return create.toLocaleDateString()
 }
+
+const route = useRoute()
+
+watch(
+    () => String(route.params.id),
+    (val: string) => {
+      getPeopleId(String(val))
+    }
+)
 </script>
 
 <style scoped>

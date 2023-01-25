@@ -39,14 +39,14 @@ import UiInput from "@/components/ui/UiInput.vue";
 import PeopleButtonFavorites from "@/modules/people/PeopleButtonFavorites.vue";
 import {goToPeopleDetail} from "@/utils/utils";
 import { swapiService } from "@/services/swapi/swapiService";
+import { useFavoritesStore } from "@/stores/favorites";
+import useDebounce from "@/composables/useDebounce";
 import type { PeopleModel } from "@/services/swapi/type";
 import type {
   Header,
   ServerOptions,
   ClickRowArgument,
 } from "vue3-easy-data-table";
-import { useFavoritesStore } from "@/stores/favorites";
-import useDebounce from "@/composables/useDebounce";
 
 const headers: Header[] = [
   { text: "Name", value: "name" },
@@ -97,8 +97,7 @@ watch(debouncedValue, () => {
 
 watch(serverOptions, (value) => {
     loadFromServer(String(value.page));
-  }, { deep: true }
-);
+});
 </script>
 
 <style lang="scss">

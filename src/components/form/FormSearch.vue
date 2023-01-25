@@ -29,10 +29,9 @@
 <script setup lang="ts">
 import UiInput from "../ui/UiInput.vue";
 import UiButton from "../ui/UiButton.vue";
-import {ref, watch} from "vue";
+import { ref, watch } from "vue";
 import { swapiService } from "@/services/swapi/swapiService";
 import type { PeopleModel } from "@/services/swapi/type";
-import { useRoute } from 'vue-router';
 import { goToPeopleDetail } from "@/utils/utils";
 import useDebounce from "@/composables/useDebounce";
 
@@ -45,16 +44,6 @@ const { debouncedValue, debounceListener } = useDebounce();
 watch(debouncedValue, () => {
   search();
 })
-
-const route = useRoute();
-console.log('route', route.params)
-watch(route.params, () => {
-  console.debug(`MyCoolComponent - watch route.name changed to ${route.params}`);
-  // Do something here...
-
-  // Optionally you can set immediate: true config for the watcher to run on init
-}, { immediate: true });
-
 
 async function search() {
   result.value = [];
@@ -76,7 +65,6 @@ async function search() {
 function goToPeople(item: PeopleModel) {
   goToPeopleDetail(item.url)
 }
-
 </script>
 
 <style lang="scss" scoped>
