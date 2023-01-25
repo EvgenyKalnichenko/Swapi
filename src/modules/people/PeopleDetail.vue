@@ -4,6 +4,7 @@
       :headers="headers"
       :items="[item]"
       :server-items-length="1"
+      :loading="loading"
       hide-footer
   >
     <template #item-name="item">
@@ -22,7 +23,8 @@
 
 <script lang="ts" setup>
 import type { Header } from "vue3-easy-data-table";
-import { computed, ref, watch } from "vue";
+import type { PeopleModel } from "@/services/swapi/type";
+import { watch } from "vue";
 
 const headers: Header[] = [
   { text: "Name", value: "name" },
@@ -35,13 +37,12 @@ const props = defineProps({
   item: {
     type: Object,
     default: {}
+  },
+  loading: {
+    type: Boolean,
+    default: true
   }
 });
-
-watch(props.item, () => {
-
-})
-
 </script>
 
 <style scoped></style>

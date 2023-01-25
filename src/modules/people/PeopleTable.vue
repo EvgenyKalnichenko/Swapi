@@ -77,7 +77,7 @@ const serverOptions = ref<ServerOptions>({
   rowsPerPage: 10,
 });
 
-let debounse = null;
+let debounse: null | ReturnType<typeof setTimeout> = null;
 
 function searchPeople() {
   if (debounse) clearTimeout(debounse);

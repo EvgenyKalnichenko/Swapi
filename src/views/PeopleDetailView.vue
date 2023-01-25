@@ -2,6 +2,7 @@
   <div class="about">
     <h1>This people detail detail view</h1>
     <PeopleDetail
+        :loading="isLoading"
         :item="people"
     />
   </div>
@@ -16,16 +17,19 @@ import type { PeopleModel } from "@/services/swapi/type";
 const props = defineProps({
   id: Number,
 });
-
-const people = ref<PeopleModel | null>(null);
-
+// TODO fix type for people
+const people = ref<any>(null);
+const isLoading = ref(false);
 try {
-  swapiService.getPeopleId(props.id).then((data: PeopleModel) => {
+  isLoading.value = true;
+  swapiService.getPeopleId(String(props.id)).then((data) => {
     console.log("data", data);
     people.value = data;
+    isLoading.value = false;
   });
 } catch (e) {
-  console.log("Ошибка");
+  console.error(e);
+  isLoading.value = false;
 }
 </script>
 

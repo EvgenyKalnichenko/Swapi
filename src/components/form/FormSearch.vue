@@ -30,17 +30,18 @@ import UiInput from "../ui/UiInput.vue";
 import UiButton from "../ui/UiButton.vue";
 import { ref } from "vue";
 import { swapiService } from "@/services/swapi/swapiService";
+import type { PeopleModel } from "@/services/swapi/type";
 
 const searchValue = ref("");
-const result = ref([]);
+const result = ref<any>([]);
 const loading = ref(false);
 
 async function search() {
   loading.value = true;
   try {
-    await swapiService.getPeople('1', searchValue.value).then((data) => {
+    await swapiService.getPeople('1', searchValue.value).then((data: any) => {
       if (data.results) {
-        result.value = data.results;
+        result.value.push(data.results);
         loading.value = false;
       }
     });
