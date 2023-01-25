@@ -7,8 +7,8 @@ async function request<TResponse>(
 }
 
 export const api = {
-  get: <TResponse>(url: string) => request<TResponse>(url, {}),
+  get: <TResponse>(url: string) => request<TResponse>(`https://swapi.dev/api${url}`, {}),
 
-  post: <TBody extends BodyInit, TResponse>(url: string, body: TBody) =>
-    request<TResponse>(url, { method: "POST", body }),
+  // post: <TBody extends BodyInit, TResponse>(url: string, body: TBody) =>
+  //   request<TResponse>(url, { method: "POST", body }),
 };

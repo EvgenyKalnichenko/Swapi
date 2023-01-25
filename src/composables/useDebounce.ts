@@ -10,7 +10,6 @@ export default function useDebounce(timeoutCount: number = 500) {
     const debouncedValue = ref("");
 
     const debounceListener = (e: InputFileEvent) => {
-        // console.log(e.target.value);
         if (timeoutRef !== null) {
             clearTimeout(timeoutRef);
         }

@@ -46,6 +46,7 @@ const store = useFavoritesStore();
 
   .favorites {
     margin-left: auto;
+    position: relative;
 
     &__count {
       width: 24px;
@@ -56,6 +57,9 @@ const store = useFavoritesStore();
       align-items: center;
       font-size: 12px;
       justify-content: center;
+      position: absolute;
+      left: 100%;
+      bottom: 50%;
     }
   }
 }
