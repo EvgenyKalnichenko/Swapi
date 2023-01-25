@@ -11,9 +11,9 @@
       {{ item.name }}
     </template>
     <template #item-events="item">
-      <button type="button">
-        Remove
-      </button>
+      <PeopleButtonFavorites
+          :item="item"
+      />
     </template>
     <template #loading>
       <h1>Loading...</h1>
@@ -23,8 +23,7 @@
 
 <script lang="ts" setup>
 import type { Header } from "vue3-easy-data-table";
-import type { PeopleModel } from "@/services/swapi/type";
-import { watch } from "vue";
+import PeopleButtonFavorites from "@/modules/people/PeopleButtonFavorites.vue";
 
 const headers: Header[] = [
   { text: "Name", value: "name" },
@@ -33,7 +32,8 @@ const headers: Header[] = [
   { text: "Hair Color", value: "hair_color" },
   { text: "Events", value: "events" },
 ];
-const props = defineProps({
+
+defineProps({
   item: {
     type: Object,
     default: {}

@@ -6,7 +6,10 @@
     </nav>
     <FormSearch class="header__search" />
     <RouterLink class="favorites" to="/favorites">
-      <span class="favorites__count" v-if="store.items.length">
+      <span
+          v-if="store.items.length"
+          class="favorites__count"
+      >
         {{ store.items.length }}
       </span>
       Favorites
@@ -15,7 +18,7 @@
 </template>
 
 <script setup lang="ts">
-import { useFavoritesStore } from "@/stores/counter";
+import { useFavoritesStore } from "@/stores/favorites";
 import FormSearch from "@/components/form/FormSearch.vue";
 
 const store = useFavoritesStore();

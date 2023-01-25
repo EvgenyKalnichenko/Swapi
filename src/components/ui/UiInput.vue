@@ -58,6 +58,7 @@ const handlerInput = (e) => {
 <style lang="scss" scoped>
 .form-group {
   position: relative;
+  width: 100%;
   //margin-bottom: 12px;
   &__input {
     display: block;

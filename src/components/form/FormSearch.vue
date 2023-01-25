@@ -2,24 +2,25 @@
   <form class="form-search">
     <UiInput
       id="search"
-      v-model="searchValue"
       placeholder="Search"
       type="text"
-      @input="search"
+      @input="debounceListener"
+      @focusin="show = true"
+      @focusout="show = false"
     />
-    <div class="form-search__button">
-      <UiButton type="submit"> Submit </UiButton>
-    </div>
     <Transition name="slide-fade">
-      <div v-if="!loading && searchValue.length" class="form-search__result">
-        <ul>
+      <div v-if="show" class="form-search__result">
+        <ul v-if="result.length">
           <li
               v-for="(item, index) in result"
               :key="index"
+              @click="goToPeople(item)"
           >
             {{ item.name }}
           </li>
         </ul>
+        <small v-if="!result.length && !loading" class="form-search__small">Not found</small>
+        <small v-if="loading" class="form-search__small">Loading...</small>
       </div>
     </Transition>
   </form>
@@ -28,27 +29,45 @@
 <script setup lang="ts">
 import UiInput from "../ui/UiInput.vue";
 import UiButton from "../ui/UiButton.vue";
-import { ref } from "vue";
+import {ref, watch} from "vue";
 import { swapiService } from "@/services/swapi/swapiService";
 import type { PeopleModel } from "@/services/swapi/type";
+import router from "@/router";
+import { getId } from "@/utils/utils";
+import useDebounce from "@/composables/useDebounce";
 
-const searchValue = ref("");
 const result = ref<any>([]);
 const loading = ref(false);
+const show = ref(false);
+
+const { debouncedValue, debounceListener } = useDebounce();
+
+watch(debouncedValue, () => {
+  search();
+})
 
 async function search() {
-  loading.value = true;
-  try {
-    await swapiService.getPeople('1', searchValue.value).then((data: any) => {
-      if (data.results) {
-        result.value.push(data.results);
+  result.value = [];
+  if(debouncedValue.value.length > 0) {
+    loading.value = true;
+    try {
+      await swapiService.getPeople('1', debouncedValue.value).then((data: any) => {
         loading.value = false;
-      }
-    });
-  } catch (error) {
-    console.error("Ошибка", error);
+        if (data.results) {
+          result.value.push(...data.results);
+        }
+      });
+    } catch (error) {
+      console.error("Ошибка", error);
+    }
   }
 }
+
+function goToPeople(item: PeopleModel) {
+  const peopleId = getId(item.url)
+  router.push(`/peoples/${peopleId}`);
+}
+
 </script>
 
 <style lang="scss" scoped>
@@ -61,10 +80,33 @@ async function search() {
 
   &__result {
     position: absolute;
-    top: 100%;
+    top: calc(100% + 10px);
     background: #fff;
     width: 100%;
     z-index: 10;
+    box-shadow: 4px 4px 8px 0 rgba(34, 60, 80, 0.2);
+    max-height: 50vh;
+    overflow: auto;
+
+    ul {
+      padding: 0;
+      list-style: none;
+
+      li {
+        cursor: pointer;
+        padding: 2px 10px;
+
+        &:hover {
+          background: var(--color-background-soft);
+        }
+      }
+    }
+  }
+
+  &__small {
+    text-align: center;
+    padding: 5px;
+    display: block;
   }
 }
 .slide-fade-enter-active {
@@ -72,7 +114,7 @@ async function search() {
 }
 
 .slide-fade-leave-active {
-  transition: all 0.45s cubic-bezier(1, 0.5, 0.8, 1);
+  transition: all 0.25s cubic-bezier(1, 0.5, 0.8, 1);
 }
 
 .slide-fade-enter-from,

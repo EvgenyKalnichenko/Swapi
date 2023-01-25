@@ -3,10 +3,9 @@
     <div class="catalog__search">
       <UiInput
           id="search"
-          v-model="searchValue"
           placeholder="Search"
           type="text"
-          @input="searchPeople"
+          @input="debounceListener"
       />
     </div>
     <EasyDataTable
@@ -22,12 +21,9 @@
         {{ item.name }}
       </template>
       <template #item-events="item">
-        <button type="button" @click.stop="store.addFavorites(item)">
-          Add
-        </button>
-        <button type="button" @click.stop="store.removeFavorites(item.name)">
-          Remove
-        </button>
+        <PeopleButtonFavorites
+          :item="item"
+        />
       </template>
       <template #loading>
         <h1>Loading...</h1>
@@ -40,6 +36,8 @@
 import { ref, watch } from "vue";
 import router from "@/router";
 import UiInput from "@/components/ui/UiInput.vue";
+import PeopleButtonFavorites from "@/modules/people/PeopleButtonFavorites.vue";
+import { getId } from "@/utils/utils";
 import { swapiService } from "@/services/swapi/swapiService";
 import type { PeopleModel } from "@/services/swapi/type";
 import type {
@@ -47,7 +45,8 @@ import type {
   ServerOptions,
   ClickRowArgument,
 } from "vue3-easy-data-table";
-import { useFavoritesStore } from "@/stores/counter";
+import { useFavoritesStore } from "@/stores/favorites";
+import useDebounce from "@/composables/useDebounce";
 
 const headers: Header[] = [
   { text: "Name", value: "name" },
@@ -57,15 +56,11 @@ const headers: Header[] = [
   { text: "Events", value: "events" },
 ];
 
-const searchValue = ref("");
-
 const store = useFavoritesStore();
 
 const handlerClick = (item: ClickRowArgument) => {
-  const id = item.url?.trim();
-  const array = id?.split("/");
-  const peopleId = array[array?.length - 2] || 0;
-  router.push(`peoples/${peopleId}`);
+  const peopleId = getId(item.url);
+  router.push(`/peoples/${peopleId}`);
 };
 
 const peoples = ref<Array<PeopleModel> | []>([]);
@@ -77,36 +72,33 @@ const serverOptions = ref<ServerOptions>({
   rowsPerPage: 10,
 });
 
-let debounse: null | ReturnType<typeof setTimeout> = null;
-
-function searchPeople() {
-  if (debounse) clearTimeout(debounse);
-  debounse = setTimeout(loadFromServer, 500);
-}
+const { debouncedValue, debounceListener } = useDebounce();
 
 const loadFromServer = async (pageId: string = '1') => {
   loading.value = true;
   try {
-    await swapiService.getPeople(pageId, searchValue.value).then((data) => {
+    await swapiService.getPeople(pageId, debouncedValue.value).then((data) => {
+      loading.value = false;
       if (data.results) {
         peoples.value = data.results;
         serverItemsLength.value = data.count;
-        loading.value = false;
       }
     });
   } catch (error) {
+    loading.value = false;
     console.error("Ошибка", error);
   }
 };
 
 loadFromServer();
 
-watch(
-  serverOptions,
-  (value) => {
+watch(debouncedValue, () => {
+  loadFromServer();
+})
+
+watch(serverOptions, (value) => {
     loadFromServer(String(value.page));
-  },
-  { deep: true }
+  }, { deep: true }
 );
 </script>
 

@@ -24,7 +24,6 @@ export const useFavoritesStore = defineStore("counter", {
   },
   getters: {
     items(state) {
-      console.log("items", state.favorites);
       return state.favorites;
     },
   },

@@ -1,6 +1,6 @@
 <template>
   <div class="about">
-    <h1>This people detail detail view</h1>
+    <h1 class="title-h1">People</h1>
     <PeopleDetail
         :loading="isLoading"
         :item="people"
@@ -23,7 +23,6 @@ const isLoading = ref(false);
 try {
   isLoading.value = true;
   swapiService.getPeopleId(String(props.id)).then((data) => {
-    console.log("data", data);
     people.value = data;
     isLoading.value = false;
   });

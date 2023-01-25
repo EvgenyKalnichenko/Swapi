@@ -21,7 +21,7 @@
 </template>
 
 <script setup lang="ts">
-import { useFavoritesStore } from "@/stores/counter";
+import { useFavoritesStore } from "@/stores/favorites";
 import type { Header } from "vue3-easy-data-table";
 
 const headers: Header[] = [
