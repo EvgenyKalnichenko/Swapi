@@ -47,13 +47,15 @@
     </template>
   </EasyDataTable>
   <div v-else>{{error}}</div>
+  {{userData}}
 </template>
 
 <script lang="ts" setup>
 import type { Header } from "vue3-easy-data-table";
 import PeopleButtonFavorites from "@/modules/people/PeopleButtonFavorites.vue";
-import { ref } from "vue";
+import { ref, watch } from "vue";
 import { swapiService } from "@/services/swapi/swapiService";
+import { useRoute } from "vue-router";
 
 const headers: Header[] = [
   { text: "Created", value: "created" },
@@ -79,23 +81,34 @@ const props = defineProps({
 const people = ref<any>({});
 const isLoading = ref(false);
 const error = ref('');
-try {
-  isLoading.value = true;
-  swapiService.getPeopleId(String(props.id)).then((data) => {
-    console.log('getPeopleId', data)
-    if(data.name) {
-      people.value = data;
-    } else {
-      error.value = 'Not found'
-    }
-
+const getPeopleId = (id: string) => {
+  error.value = ''
+  try {
+    isLoading.value = true;
+    swapiService.getPeopleId(id).then((data) => {
+      if(data.name) {
+        people.value = data;
+      } else {
+        error.value = 'Not found'
+      }
+      isLoading.value = false;
+    });
+  } catch (e) {
+    console.error(e);
     isLoading.value = false;
-  });
-} catch (e) {
-  console.error(e);
-  isLoading.value = false;
+  }
 }
 
+getPeopleId(String(props.id))
+
+const route = useRoute()
+
+watch(
+    () => route.params.id,
+    async (val: string) => {
+      getPeopleId(val)
+    }
+)
 function formatsDate(date: string) {
   const create = new Date(date)
   return create.toLocaleDateString()

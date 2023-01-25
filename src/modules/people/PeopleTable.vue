@@ -37,7 +37,7 @@ import { ref, watch } from "vue";
 import router from "@/router";
 import UiInput from "@/components/ui/UiInput.vue";
 import PeopleButtonFavorites from "@/modules/people/PeopleButtonFavorites.vue";
-import { getId } from "@/utils/utils";
+import {goToPeopleDetail} from "@/utils/utils";
 import { swapiService } from "@/services/swapi/swapiService";
 import type { PeopleModel } from "@/services/swapi/type";
 import type {
@@ -59,8 +59,7 @@ const headers: Header[] = [
 const store = useFavoritesStore();
 
 const handlerClick = (item: ClickRowArgument) => {
-  const peopleId = getId(item.url);
-  router.push(`/peoples/${peopleId}`);
+  goToPeopleDetail(item.url)
 };
 
 const peoples = ref<Array<PeopleModel> | []>([]);
