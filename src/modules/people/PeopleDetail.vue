@@ -21,8 +21,8 @@
 </template>
 
 <script lang="ts" setup>
-import {Header} from "vue3-easy-data-table";
-import {computed, ref, watch} from "vue";
+import type { Header } from "vue3-easy-data-table";
+import { computed, ref, watch } from "vue";
 
 const headers: Header[] = [
   { text: "Name", value: "name" },

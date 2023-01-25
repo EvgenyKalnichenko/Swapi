@@ -13,7 +13,10 @@
     <Transition name="slide-fade">
       <div v-if="!loading && searchValue.length" class="form-search__result">
         <ul>
-          <li v-for="(item, index) in result" :key="index">
+          <li
+              v-for="(item, index) in result"
+              :key="index"
+          >
             {{ item.name }}
           </li>
         </ul>
@@ -35,7 +38,7 @@ const loading = ref(false);
 async function search() {
   loading.value = true;
   try {
-    await swapiService.getPeople(1, searchValue.value).then((data) => {
+    await swapiService.getPeople('1', searchValue.value).then((data) => {
       if (data.results) {
         result.value = data.results;
         loading.value = false;

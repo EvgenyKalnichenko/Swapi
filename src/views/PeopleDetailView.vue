@@ -11,16 +11,16 @@
 import { swapiService } from "@/services/swapi/swapiService";
 import { ref } from "vue";
 import PeopleDetail from "@/modules/people/PeopleDetail.vue";
-import {PeopleModel} from "@/services/swapi/type";
+import type { PeopleModel } from "@/services/swapi/type";
 
 const props = defineProps({
   id: Number,
 });
 
-const people = ref({});
+const people = ref<PeopleModel | null>(null);
 
 try {
-  swapiService.getPeopleId(props.id).then((data) => {
+  swapiService.getPeopleId(props.id).then((data: PeopleModel) => {
     console.log("data", data);
     people.value = data;
   });

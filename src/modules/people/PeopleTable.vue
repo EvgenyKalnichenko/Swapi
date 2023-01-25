@@ -84,7 +84,7 @@ function searchPeople() {
   debounse = setTimeout(loadFromServer, 500);
 }
 
-const loadFromServer = async (pageId) => {
+const loadFromServer = async (pageId: string = '1') => {
   loading.value = true;
   try {
     await swapiService.getPeople(pageId, searchValue.value).then((data) => {
@@ -104,7 +104,7 @@ loadFromServer();
 watch(
   serverOptions,
   (value) => {
-    loadFromServer(value.page);
+    loadFromServer(String(value.page));
   },
   { deep: true }
 );
