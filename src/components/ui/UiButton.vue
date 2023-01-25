@@ -9,10 +9,6 @@
 
 <script setup>
 defineProps({
-  modelValue: {
-    type: String,
-    default: "",
-  },
   type: {
     type: String,
     default: "button",

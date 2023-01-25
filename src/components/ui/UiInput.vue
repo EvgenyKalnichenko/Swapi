@@ -18,7 +18,7 @@
   </div>
 </template>
 
-<script setup>
+<script lang="ts" setup>
 const emit = defineEmits(["update:modelValue"]);
 defineProps({
   modelValue: {
@@ -51,8 +51,8 @@ defineProps({
   },
 });
 
-const handlerInput = (e) => {
-  emit("update:modelValue", e.target.value);
+const handlerInput = (event: Event) => {
+  emit("update:modelValue", (event.target as HTMLInputElement).value);
 };
 </script>
 
