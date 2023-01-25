@@ -2,28 +2,26 @@
   <div class="catalog">
     <div class="catalog__search">
       <UiInput
-          id="search"
-          placeholder="Search"
-          type="text"
-          @input="debounceListener"
+        id="search"
+        placeholder="Search"
+        type="text"
+        @input="debounceListener"
       />
     </div>
     <EasyDataTable
-        v-model:server-options="serverOptions"
-        :headers="headers"
-        :loading="loading"
-        :items="peoples"
-        :server-items-length="serverItemsLength"
-        @click-row="handlerClick"
-        buttons-pagination
+      v-model:server-options="serverOptions"
+      :headers="headers"
+      :loading="loading"
+      :items="peoples"
+      :server-items-length="serverItemsLength"
+      @click-row="handlerClick"
+      buttons-pagination
     >
       <template #item-name="item">
         {{ item.name }}
       </template>
       <template #item-events="item">
-        <PeopleButtonFavorites
-          :item="item"
-        />
+        <PeopleButtonFavorites :item="item" />
       </template>
       <template #loading>
         <h1>Loading...</h1>
@@ -34,12 +32,10 @@
 
 <script lang="ts" setup>
 import { ref, watch } from "vue";
-import router from "@/router";
 import UiInput from "@/components/ui/UiInput.vue";
 import PeopleButtonFavorites from "@/modules/people/PeopleButtonFavorites.vue";
-import {goToPeopleDetail} from "@/utils/utils";
+import { goToPeopleDetail } from "@/utils/utils";
 import { swapiService } from "@/services/swapi/swapiService";
-import { useFavoritesStore } from "@/stores/favorites";
 import useDebounce from "@/composables/useDebounce";
 import type { PeopleModel } from "@/services/swapi/type";
 import type {
@@ -56,10 +52,8 @@ const headers: Header[] = [
   { text: "Events", value: "events" },
 ];
 
-const store = useFavoritesStore();
-
 const handlerClick = (item: ClickRowArgument) => {
-  goToPeopleDetail(item.url)
+  goToPeopleDetail(item.url);
 };
 
 const peoples = ref<Array<PeopleModel> | []>([]);
@@ -73,7 +67,7 @@ const serverOptions = ref<ServerOptions>({
 
 const { debouncedValue, debounceListener } = useDebounce();
 
-const loadFromServer = async (pageId: string = '1') => {
+const loadFromServer = async (pageId: string = "1") => {
   loading.value = true;
   try {
     await swapiService.getPeople(pageId, debouncedValue.value).then((data) => {
@@ -93,10 +87,10 @@ loadFromServer();
 
 watch(debouncedValue, () => {
   loadFromServer();
-})
+});
 
 watch(serverOptions, (value) => {
-    loadFromServer(String(value.page));
+  loadFromServer(String(value.page));
 });
 </script>
 

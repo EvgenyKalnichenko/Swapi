@@ -12,14 +12,16 @@
       <div v-if="show" class="form-search__result">
         <ul v-if="result.length">
           <li
-              v-for="(item, index) in result"
-              :key="index"
-              @click="goToPeople(item)"
+            v-for="(item, index) in result"
+            :key="index"
+            @click="goToPeople(item)"
           >
             {{ item.name }}
           </li>
         </ul>
-        <small v-if="!result.length && !loading" class="form-search__small">Not found</small>
+        <small v-if="!result.length && !loading" class="form-search__small"
+          >Not found</small
+        >
         <small v-if="loading" class="form-search__small">Loading...</small>
       </div>
     </Transition>
@@ -27,8 +29,7 @@
 </template>
 
 <script setup lang="ts">
-import UiInput from "../ui/UiInput.vue";
-import UiButton from "../ui/UiButton.vue";
+import UiInput from "@/components/ui/UiInput.vue";
 import { ref, watch } from "vue";
 import { swapiService } from "@/services/swapi/swapiService";
 import type { PeopleModel } from "@/services/swapi/type";
@@ -39,31 +40,33 @@ const result = ref<any>([]);
 const loading = ref(false);
 const show = ref(false);
 
-const { debouncedValue, debounceListener } = useDebounce();
-
-watch(debouncedValue, () => {
-  search();
-})
-
 async function search() {
   result.value = [];
-  if(debouncedValue.value.length > 0) {
+  if (debouncedValue.value.length > 0) {
     loading.value = true;
     try {
-      await swapiService.getPeople('1', debouncedValue.value).then((data: any) => {
-        loading.value = false;
-        if (data.results) {
-          result.value.push(...data.results);
-        }
-      });
+      await swapiService
+        .getPeople("1", debouncedValue.value)
+        .then((data: any) => {
+          loading.value = false;
+          if (data.results) {
+            result.value.push(...data.results);
+          }
+        });
     } catch (error) {
       console.error("Ошибка", error);
     }
   }
 }
 
+const { debouncedValue, debounceListener } = useDebounce();
+
+watch(debouncedValue, () => {
+  search();
+});
+
 function goToPeople(item: PeopleModel) {
-  goToPeopleDetail(item.url)
+  goToPeopleDetail(item.url);
 }
 </script>
 

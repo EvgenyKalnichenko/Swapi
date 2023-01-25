@@ -36,8 +36,8 @@ const headers: Header[] = [
 const store = useFavoritesStore();
 
 const handlerClick = (item: ClickRowArgument) => {
-  goToPeopleDetail(item.url)
-}
+  goToPeopleDetail(item.url);
+};
 </script>
 
 <style scoped></style>

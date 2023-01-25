@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import TheHeader from "@/modules/header/TheHeader.vue";
-document.documentElement.setAttribute('prefers-color-scheme', 'dark')
+document.documentElement.setAttribute("prefers-color-scheme", "dark");
 </script>
 
 <template>
@@ -9,4 +9,3 @@ document.documentElement.setAttribute('prefers-color-scheme', 'dark')
     <RouterView />
   </div>
 </template>
-

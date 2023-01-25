@@ -1,17 +1,13 @@
 <template>
   <div class="button-wrap">
     <button
-        v-if="!store.items.find(el => el.name === item.name)"
-        type="button"
-        @click.stop="store.addFavorites(item)"
+      v-if="!store.items.find((el) => el.name === item.name)"
+      type="button"
+      @click.stop="store.addFavorites(item)"
     >
       Add
     </button>
-    <button
-        v-else
-        type="button"
-        @click.stop="store.removeFavorites(item.name)"
-    >
+    <button v-else type="button" @click.stop="store.removeFavorites(item.name)">
       Remove
     </button>
   </div>
@@ -25,9 +21,9 @@ import type { PropType } from "vue";
 defineProps({
   item: {
     type: Object as PropType<PeopleModel>,
-    default: {}
-  }
-})
+    default: () => {},
+  },
+});
 
 const store = useFavoritesStore();
 </script>

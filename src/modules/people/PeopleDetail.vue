@@ -1,11 +1,11 @@
 <template>
   <EasyDataTable
-      v-if="id && !error"
-      :headers="headers"
-      :items="[people]"
-      :server-items-length="1"
-      :loading="isLoading"
-      hide-footer
+    v-if="id && !error"
+    :headers="headers"
+    :items="[people]"
+    :server-items-length="1"
+    :loading="isLoading"
+    hide-footer
   >
     <template #loading>
       <h1>Loading...</h1>
@@ -20,33 +20,31 @@
       {{ item.name }}
     </template>
     <template #item-events="item">
-      <PeopleButtonFavorites
-          :item="item"
-      />
+      <PeopleButtonFavorites :item="item" />
     </template>
     <template #item-films="item">
       <ul>
-        <li v-for="(film, index) in item.films">
+        <li v-for="(film, index) in item.films" :key="index">
           <a :href="film" target="_blank">{{ film }}</a>
         </li>
       </ul>
     </template>
     <template #item-starships="item">
       <ul>
-        <li v-for="(starship, index) in item.starships">
+        <li v-for="(starship, index) in item.starships" :key="index">
           <a :href="starship" target="_blank">{{ starship }}</a>
         </li>
       </ul>
     </template>
     <template #item-vehicles="item">
       <ul>
-        <li v-for="(vehicle, index) in item.vehicles">
+        <li v-for="(vehicle, index) in item.vehicles" :key="index">
           <a :href="vehicle" target="_blank">{{ vehicle }}</a>
         </li>
       </ul>
     </template>
   </EasyDataTable>
-  <div v-else>{{error}}</div>
+  <div v-else>{{ error }}</div>
 </template>
 
 <script lang="ts" setup>
@@ -79,16 +77,16 @@ const props = defineProps({
 // TODO fix type for people
 const people = ref<any>({});
 const isLoading = ref(false);
-const error = ref('');
+const error = ref("");
 const getPeopleId = (id: string) => {
-  error.value = ''
+  error.value = "";
   try {
     isLoading.value = true;
     swapiService.getPeopleId(id).then((data) => {
-      if(data.name) {
+      if (data.name) {
         people.value = data;
       } else {
-        error.value = 'Not found'
+        error.value = "Not found";
       }
       isLoading.value = false;
     });
@@ -96,23 +94,23 @@ const getPeopleId = (id: string) => {
     console.error(e);
     isLoading.value = false;
   }
-}
+};
 
-getPeopleId(String(props.id))
+getPeopleId(String(props.id));
 
 function formatsDate(date: string) {
-  const create = new Date(date)
-  return create.toLocaleDateString()
+  const create = new Date(date);
+  return create.toLocaleDateString();
 }
 
-const route = useRoute()
+const route = useRoute();
 
 watch(
-    () => String(route.params.id),
-    (val: string) => {
-      getPeopleId(String(val))
-    }
-)
+  () => String(route.params.id),
+  (val: string) => {
+    getPeopleId(String(val));
+  }
+);
 </script>
 
 <style scoped>

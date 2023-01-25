@@ -6,10 +6,7 @@
     </nav>
     <FormSearch class="header__search" />
     <RouterLink class="favorites" to="/favorites">
-      <span
-          v-if="store.items.length"
-          class="favorites__count"
-      >
+      <span v-if="store.items.length" class="favorites__count">
         {{ store.items.length }}
       </span>
       Favorites

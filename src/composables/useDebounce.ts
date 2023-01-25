@@ -1,24 +1,24 @@
 import { ref } from "vue";
 
 interface InputFileEvent extends Event {
-    target: HTMLInputElement;
+  target: HTMLInputElement;
 }
 
 export default function useDebounce(timeoutCount: number = 500) {
-    let timeoutRef: null | ReturnType<typeof setTimeout> = null;
-    const displayValue = ref("");
-    const debouncedValue = ref("");
+  let timeoutRef: null | ReturnType<typeof setTimeout> = null;
+  const displayValue = ref("");
+  const debouncedValue = ref("");
 
-    const debounceListener = (e: InputFileEvent) => {
-        if (timeoutRef !== null) {
-            clearTimeout(timeoutRef);
-        }
+  const debounceListener = (e: InputFileEvent) => {
+    if (timeoutRef !== null) {
+      clearTimeout(timeoutRef);
+    }
 
-        displayValue.value = e.target.value ;
-        timeoutRef = setTimeout(() => {
-            debouncedValue.value = e.target.value;
-        }, timeoutCount);
-    };
+    displayValue.value = e.target.value;
+    timeoutRef = setTimeout(() => {
+      debouncedValue.value = e.target.value;
+    }, timeoutCount);
+  };
 
-    return { debouncedValue, displayValue, debounceListener };
+  return { debouncedValue, displayValue, debounceListener };
 }

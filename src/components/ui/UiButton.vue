@@ -1,21 +1,18 @@
 <template>
-  <button
-      :type="type"
-      class="btn"
-  >
+  <button :type="type" class="btn">
     <slot />
   </button>
 </template>
 
-<script setup>
+<script lang="ts" setup>
+import type { PropType } from "vue";
+export type Type = "button" | "submit" | "reset";
+
 defineProps({
   type: {
-    type: String,
+    type: String as PropType<Type>,
     default: "button",
-  },
-  disabled: {
-    type: Boolean,
-    default: false,
+    validator: (prop: Type) => ["button", "submit", "reset"].includes(prop),
   },
 });
 </script>
