@@ -19,10 +19,12 @@
             {{ item.name }}
           </li>
         </ul>
-        <small v-if="!result.length && !loading" class="form-search__small"
-          >Not found</small
-        >
-        <small v-if="loading" class="form-search__small">Loading...</small>
+        <small v-if="!result.length && !loading" class="form-search__small">
+          Not found
+        </small>
+        <small v-if="loading" class="form-search__small">
+          Loading...
+        </small>
       </div>
     </Transition>
   </form>
@@ -30,6 +32,7 @@
 
 <script setup lang="ts">
 import UiInput from "@/components/ui/UiInput.vue";
+import UiButton from "@/components/ui/UiButton.vue";
 import { ref, watch } from "vue";
 import { swapiService } from "@/services/swapi/swapiService";
 import type { PeopleModel } from "@/services/swapi/type";

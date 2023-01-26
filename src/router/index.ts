@@ -1,5 +1,6 @@
 import { createRouter, createWebHistory } from "vue-router";
 import HomeView from "@/views/HomeView.vue";
+import {nextTick} from "vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -26,7 +27,7 @@ const router = createRouter({
     {
       path: "/peoples/:id",
       name: "PeopleDetail",
-      props: (route) => ({ id: Number(route.params.id) }),
+      props: (route) => ({id: Number(route.params.id)}),
       component: () => import("@/views/PeopleDetailView.vue"),
     },
     {
@@ -48,16 +49,16 @@ const router = createRouter({
   ],
 });
 
-// const DEFAULT_TITLE: string = "Default title";
-// const DEFAULT_DESCRIPTION: string = "Default description";
-// router.afterEach((to) => {
-//   nextTick(() => {
-//     //@ts-ignore
-//     document.title = to.meta.title || DEFAULT_TITLE; //@ts-ignore
-//     document
-//       .querySelector('meta[name="description"]') //@ts-ignore
-//       .setAttribute("content", to.meta.description || DEFAULT_DESCRIPTION);
-//   });
-// });
+const DEFAULT_TITLE: string = "Default title";
+const DEFAULT_DESCRIPTION: string = "Default description";
+router.afterEach((to) => {
+  nextTick(() => {
+    document.title = String(to.meta.title) || DEFAULT_TITLE;
+    const meta = document.querySelector<HTMLElement>('meta[name="description"]') || false
+    if(meta) {
+      meta.setAttribute("content", String(to.meta.description) || DEFAULT_DESCRIPTION);
+    }
+  });
+});
 
 export default router;

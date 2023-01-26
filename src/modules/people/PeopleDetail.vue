@@ -85,6 +85,7 @@ const getPeopleId = (id: string) => {
     swapiService.getPeopleId(id).then((data: PeopleModel) => {
       if (data.name) {
         people.value = data;
+        document.title = data.name;
       } else {
         error.value = "Not found";
       }
